@@ -32,7 +32,6 @@ import sun.java2d.pipe.SpanShapeRenderer;
  */
 public class ReclamationsDocument
 {
-
     private Document document;
     
     public ReclamationsDocument(String documentFilePath)throws ParserConfigurationException, SAXException, IOException
@@ -124,7 +123,7 @@ public class ReclamationsDocument
         {
             int clientInt = Integer.parseInt(client);
             char contratChar = contrat.charAt(0);
-            Date dateDate = new Date(date.replace('-', '/') + "/01"); 
+            Date dateDate = new Date(date.replace('-', '/') + "/01"); //jour bidon pour utiliser le constructeur
             reclamation.setClient(clientInt);
             reclamation.setContrat(contratChar);
             reclamation.setMois(dateDate);
