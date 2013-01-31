@@ -24,8 +24,8 @@ public class App {
      */
     public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException 
     {
-        
         ReclamationsDocument reclamationsDocument = new ReclamationsDocument("C:\\Users\\Leg\\Desktop\\INF2015\\test.xml");
+        Traitement traitement = new Traitement();
         boolean validation;
         
         List<Reclamation> listReclamations = new ArrayList<Reclamation>();
@@ -38,20 +38,31 @@ public class App {
             
             if(validation)
             {
-                //TRAITEMENT DES DONNÉES
-                //CRÉATION DU NOUVEAU FICHIER XML
+                List<Reclamation> remboursements = new ArrayList<Reclamation>();
+                traitement.TraitementSoin(compteReclamation, remboursements);
                 
-                /*
+                //////TESTS//////////////////////////////////////////////////////
                 System.out.println(compteReclamation.getClient());
                 System.out.println(compteReclamation.getContrat());
                 System.out.println(compteReclamation.getMois() + "\n");
+                
+                System.out.println("RECLAMATIONS");
                 for (Reclamation reclamation : listReclamations) 
                 {
                    System.out.println(reclamation.getSoin());
                    System.out.println(reclamation.getDate().toString());
                    System.out.println(reclamation.getMontant() + "\n");               
                 }
-                */
+                
+                System.out.println("REMBOURSEMENT");
+                for (Reclamation reclamation : remboursements) 
+                {
+                   System.out.println(reclamation.getSoin());
+                   System.out.println(reclamation.getDate().toString());
+                   System.out.println(reclamation.getMontant() + "\n");               
+                }
+               //////////////////////////////////////////////////////////////////// 
+                
             }
             else
             {

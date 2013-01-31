@@ -111,6 +111,7 @@ public class ReclamationsDocument
     
     public boolean createCompteReclamation(CompteReclamation reclamation, List<Reclamation> reclamations)
     {
+        reclamation.setReclamationList(reclamations);
         SimpleRegex regexClient = new SimpleRegex("[0-9]{6}");
         SimpleRegex regexContrat = new SimpleRegex("A|B|C|D");
         SimpleRegex regexDate = new SimpleRegex("[0-9]{4}-(0[0-9]|1[0-2])");
