@@ -22,9 +22,10 @@ public class App {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException 
+    public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException, Exception 
     {
         ReclamationsDocument reclamationsDocument = new ReclamationsDocument("C:\\Users\\Leg\\Desktop\\INF2015\\test.xml");
+        
         Traitement traitement = new Traitement();
         boolean validation;
         
@@ -40,29 +41,9 @@ public class App {
             {
                 List<Reclamation> remboursements = new ArrayList<Reclamation>();
                 traitement.TraitementSoin(compteReclamation, remboursements);
-                
-                //////TESTS//////////////////////////////////////////////////////
-                System.out.println(compteReclamation.getClient());
-                System.out.println(compteReclamation.getContrat());
-                System.out.println(compteReclamation.getMois() + "\n");
-                
-                System.out.println("RECLAMATIONS");
-                for (Reclamation reclamation : listReclamations) 
-                {
-                   System.out.println(reclamation.getSoin());
-                   System.out.println(reclamation.getDate().toString());
-                   System.out.println(reclamation.getMontant() + "\n");               
-                }
-                
-                System.out.println("REMBOURSEMENT");
-                for (Reclamation reclamation : remboursements) 
-                {
-                   System.out.println(reclamation.getSoin());
-                   System.out.println(reclamation.getDate().toString());
-                   System.out.println(reclamation.getMontant() + "\n");               
-                }
-               //////////////////////////////////////////////////////////////////// 
-                
+                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements); 
+                reclamationsDocument.saveToFile("C:\\Users\\Leg\\Desktop\\INF2015\\NEW.xml");
+                       
             }
             else
             {

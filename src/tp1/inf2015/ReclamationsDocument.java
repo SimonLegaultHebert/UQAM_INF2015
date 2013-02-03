@@ -4,6 +4,7 @@
  */
 package tp1.inf2015;
 
+import com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.File;
@@ -14,6 +15,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.Node;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -33,6 +35,7 @@ import sun.java2d.pipe.SpanShapeRenderer;
 public class ReclamationsDocument
 {
     private Document document;
+    private Document document2;
     
     public ReclamationsDocument(String documentFilePath)throws ParserConfigurationException, SAXException, IOException
     {
@@ -44,6 +47,7 @@ public class ReclamationsDocument
         DocumentBuilderFactory documentFactory = initializeDocumentFactory();
         DocumentBuilder parser = documentFactory.newDocumentBuilder();
         document = parser.parse(documentFilePath);
+        
     }
 
     private DocumentBuilderFactory initializeDocumentFactory() 
@@ -83,8 +87,7 @@ public class ReclamationsDocument
         List<String> date = getTagList("date");
         List<String> montant = getTagList("montant");
         
-        if(soin.size() == date.size() && soin.size() == montant.size())
-        {
+        
             int size = soin.size();
             for(int i = 0; i < size; ++i)
             {
@@ -101,12 +104,7 @@ public class ReclamationsDocument
                     return false; //si un champ n'est pas valide
                 }
             }
-        }
-        else
-        {
-            return false; //s'il manque un champ
-        }
-        return true; 
+       return true; 
     }
     
     public boolean createCompteReclamation(CompteReclamation reclamation, List<Reclamation> reclamations)
@@ -115,7 +113,6 @@ public class ReclamationsDocument
         SimpleRegex regexClient = new SimpleRegex("[0-9]{6}");
         SimpleRegex regexContrat = new SimpleRegex("A|B|C|D");
         SimpleRegex regexDate = new SimpleRegex("[0-9]{4}-(0[0-9]|1[0-2])");
-        //Faut-il gérer s'il manque un TAG ?
         String client = getTag("client");
         String contrat = getTag("contrat");
         String date = getTag("mois");
@@ -136,12 +133,52 @@ public class ReclamationsDocument
         return true;
     }
     
+    public void clean()
+    {
+        NodeList nodeList = document.getChildNodes();
+        for(int i = 0; i < nodeList.getLength(); ++i)
+        {
+            document.removeChild(nodeList.item(i));
+        }      
+    }
     
+     
+    public void addTagRemboursement(CompteReclamation compteReclamation, List<Reclamation> listRemboursements) 
+    {
+        clean();
+        Element rootElement = document.createElement("remboursements");
+        document.appendChild(rootElement);
+                 
+        Element client = document.createElement("client");
+        rootElement.appendChild(client);
+        client.setTextContent(String.valueOf(compteReclamation.getClient()));
+                    
+        Element mois = document.createElement("mois");
+        rootElement.appendChild(mois);
+        mois.setTextContent(String.valueOf(compteReclamation.getMois()));   
+        
+        for(Reclamation remboursement : listRemboursements)
+        {
+            Element nodeRemboursement = document.createElement("remboursement");
+            rootElement.appendChild(nodeRemboursement);
+            
+            Element soin = document.createElement("soin");
+            nodeRemboursement.appendChild(soin);
+            soin.setTextContent(String.valueOf(remboursement.getSoin()));
+            
+            Element date = document.createElement("mois");
+            nodeRemboursement.appendChild(date);
+            date.setTextContent(String.valueOf(remboursement.getDate()));
+            
+            Element montant = document.createElement("montant");
+            nodeRemboursement.appendChild(montant);
+            montant.setTextContent(String.valueOf(remboursement.getMontant()));
+            
+        }
+    }
     
-    
-    
-    
-    public void saveToFile(String filePath) throws Exception {
+    public void saveToFile(String filePath) throws Exception 
+    {
         Source domSource = new DOMSource(document);
         File xmlFile = new File(filePath);
         Result serializationResult = new StreamResult(xmlFile);
