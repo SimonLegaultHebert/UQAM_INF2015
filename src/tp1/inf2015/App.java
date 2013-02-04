@@ -24,7 +24,7 @@ public class App {
      */
     public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException, Exception 
     {
-        ReclamationsDocument reclamationsDocument = new ReclamationsDocument("xml/test.xml");
+        ReclamationsDocument reclamationsDocument = new ReclamationsDocument(args[0]);
         
         Traitement traitement = new Traitement();
         boolean validation;
@@ -41,16 +41,16 @@ public class App {
             {
                 List<Reclamation> remboursements = new ArrayList<Reclamation>();
                 traitement.TraitementSoin(compteReclamation, remboursements);
-                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements, "xml/NEW.xml");                      
+                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements, args[1]);                      
             }
             else
             {
-                reclamationsDocument.addTagInvalide("xml/NEW.xml");
+                reclamationsDocument.addTagInvalide(args[1]);
             }
         }
         else
         {
-            reclamationsDocument.addTagInvalide("xml/NEW.xml");
+            reclamationsDocument.addTagInvalide(args[1]);
         }
     
     }                                                                                                                                                                                                                                                                                                         
