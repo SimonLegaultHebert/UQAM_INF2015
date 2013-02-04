@@ -184,7 +184,7 @@ public class ReclamationsDocument
             nodeRemboursement.appendChild(soin);
             soin.setTextContent(String.valueOf(remboursement.getSoin()));
             
-            Element date = document.createElement("mois");
+            Element date = document.createElement("date");
             nodeRemboursement.appendChild(date);
             Date dateR = remboursement.getDate();
             date.setTextContent(dateR.getAnnee() + "-" + dateR.getMois() + "-" + dateR.getJour());
