@@ -24,7 +24,7 @@ public class App {
      */
     public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException, Exception 
     {
-        ReclamationsDocument reclamationsDocument = new ReclamationsDocument("C:\\Users\\Leg\\Desktop\\INF2015\\test.xml");
+        ReclamationsDocument reclamationsDocument = new ReclamationsDocument("xml/test.xml");
         
         Traitement traitement = new Traitement();
         boolean validation;
@@ -41,20 +41,16 @@ public class App {
             {
                 List<Reclamation> remboursements = new ArrayList<Reclamation>();
                 traitement.TraitementSoin(compteReclamation, remboursements);
-                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements); 
-                reclamationsDocument.saveToFile("C:\\Users\\Leg\\Desktop\\INF2015\\NEW.xml");
-                       
+                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements, "xml/NEW.xml");                      
             }
             else
             {
-                System.out.println("INVALIDE");
-                //UTILISATION DE LA MÉTHODE POUR CRÉER LE FICHIER INVALIDE
+                reclamationsDocument.addTagInvalide("xml/NEW.xml");
             }
         }
         else
         {
-            System.out.println("INVALIDE");
-            //UTILISATION DE LA MÉTHODE POUR CRÉER LE FICHIER INVALIDE
+            reclamationsDocument.addTagInvalide("xml/NEW.xml");
         }
     
     }                                                                                                                                                                                                                                                                                                         

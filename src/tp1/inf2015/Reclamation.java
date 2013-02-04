@@ -4,7 +4,6 @@
  */
 package tp1.inf2015;
 
-import java.util.Date;
 
 /**
  *

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<reclamations>
+<client>100323</client>
+<contrat>A</contrat>
+<mois>2013-01</mois>
+<reclamation>
+<soin>100</soin>
+<date>2013-01-11</date>
+<montant>234.00$</montant>
+</reclamation>
+<reclamation>
+<soin>200</soin>
+<date>2013-01-13</date>
+<montant>90.00$</montant>
+</reclamation>
+<reclamation>
+<soin>334</soin>
+<date>2013-01-23</date>
+<montant>125.00$</montant>
+</reclamation>
+</reclamations>

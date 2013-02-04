@@ -9,8 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,7 +36,6 @@ import sun.java2d.pipe.SpanShapeRenderer;
 public class ReclamationsDocument
 {
     private Document document;
-    private Document document2;
     
     public ReclamationsDocument(String documentFilePath)throws ParserConfigurationException, SAXException, IOException
     {
@@ -78,6 +78,23 @@ public class ReclamationsDocument
         return tagName.getTextContent();
     }
     
+    public Date parsingDate(String dateString)
+    {
+        String[] dateTab = dateString.split("-");
+        Date date = null;
+        if(dateTab.length == 2)
+        {
+            date = new Date(dateTab[0], dateTab[1]);
+        }
+        else
+        {
+            date = new Date(dateTab[0], dateTab[1], dateTab[2]);
+        }
+        
+        return date;
+    
+    }
+    
     public boolean createReclamationsList(List<Reclamation> reclamations)
     {
         SimpleRegex regexSoin = new SimpleRegex("0|100|200|400|500|600|700|(3[0-9][0-9])");
@@ -94,7 +111,7 @@ public class ReclamationsDocument
                 if(regexSoin.matches(soin.get(i)) && regexDate.matches(date.get(i)) && regexMontant.matches(montant.get(i)))
                 {
                     int soinInt = Integer.parseInt(soin.get(i));
-                    Date dateDate = new Date(date.get(i).replace('-', '/'));
+                    Date dateDate = parsingDate(date.get(i));
                     double montantDouble = Double.parseDouble(montant.get(i).substring(0, montant.get(i).length() - 1));
                     Reclamation reclamation = new Reclamation(soinInt, dateDate, montantDouble);
                     reclamations.add(reclamation);
@@ -121,21 +138,21 @@ public class ReclamationsDocument
         {
             int clientInt = Integer.parseInt(client);
             char contratChar = contrat.charAt(0);
-            Date dateDate = new Date(date.replace('-', '/') + "/01"); //jour bidon pour utiliser le constructeur
+            Date dateDate = parsingDate(date);
             reclamation.setClient(clientInt);
             reclamation.setContrat(contratChar);
-            reclamation.setMois(dateDate);
+            reclamation.setDate(dateDate);
         }                                                            
         else
         {
-            return false;
+            return false; //si le champ n'est pas valide
         }
         return true;
     }
     
     public void clean()
     {
-        NodeList nodeList = document.getChildNodes();
+        NodeList nodeList = document.getChildNodes(); 
         for(int i = 0; i < nodeList.getLength(); ++i)
         {
             document.removeChild(nodeList.item(i));
@@ -143,7 +160,7 @@ public class ReclamationsDocument
     }
     
      
-    public void addTagRemboursement(CompteReclamation compteReclamation, List<Reclamation> listRemboursements) 
+    public void addTagRemboursement(CompteReclamation compteReclamation, List<Reclamation> listRemboursements, String filePath) throws Exception 
     {
         clean();
         Element rootElement = document.createElement("remboursements");
@@ -155,7 +172,8 @@ public class ReclamationsDocument
                     
         Element mois = document.createElement("mois");
         rootElement.appendChild(mois);
-        mois.setTextContent(String.valueOf(compteReclamation.getMois()));   
+        Date dateC = compteReclamation.getDate();
+        mois.setTextContent(dateC.getAnnee() + "-" + dateC.getMois());   
         
         for(Reclamation remboursement : listRemboursements)
         {
@@ -168,13 +186,30 @@ public class ReclamationsDocument
             
             Element date = document.createElement("mois");
             nodeRemboursement.appendChild(date);
-            date.setTextContent(String.valueOf(remboursement.getDate()));
+            Date dateR = remboursement.getDate();
+            date.setTextContent(dateR.getAnnee() + "-" + dateR.getMois() + "-" + dateR.getJour());
             
             Element montant = document.createElement("montant");
             nodeRemboursement.appendChild(montant);
-            montant.setTextContent(String.valueOf(remboursement.getMontant()));
+            NumberFormat decim = DecimalFormat.getInstance();
+            decim.setMinimumFractionDigits(2);
+            montant.setTextContent((decim.format(remboursement.getMontant())) + "$");
             
         }
+        saveToFile(filePath);
+    }
+    
+    public void addTagInvalide(String filePath) throws Exception
+    {
+        clean();
+        Element rootElement = document.createElement("remboursements");
+        document.appendChild(rootElement);
+        
+        Element message = document.createElement("message");
+        rootElement.appendChild(message);
+        message.setTextContent("Données invalides");
+        
+        saveToFile(filePath);
     }
     
     public void saveToFile(String filePath) throws Exception 
@@ -184,6 +219,7 @@ public class ReclamationsDocument
         Result serializationResult = new StreamResult(xmlFile);
         Transformer xmlTransformer = TransformerFactory.newInstance().newTransformer();
         xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        xmlTransformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
         xmlTransformer.transform(domSource, serializationResult);
     }    
 }

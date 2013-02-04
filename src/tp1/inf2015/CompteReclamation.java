@@ -4,7 +4,7 @@
  */
 package tp1.inf2015;
 
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -15,19 +15,16 @@ public class CompteReclamation
 {
     private int client;
     private char contrat;
-    private Date mois;
+    private Date date;
     List<Reclamation> reclamationList;
     
-    public CompteReclamation() 
-    {
-        
-    }
+    public CompteReclamation(){}
     
-    public CompteReclamation(int client, char contrat, Date mois, List<Reclamation> reclamationList) 
+    public CompteReclamation(int client, char contrat, Date date, List<Reclamation> reclamationList) 
     {
         this.client = client;
         this.contrat = contrat;
-        this.mois = mois;
+        this.date = date;
         this.reclamationList = reclamationList;
     }
 
@@ -51,14 +48,14 @@ public class CompteReclamation
         this.contrat = contrat;
     }
 
-    public Date getMois() 
+    public Date getDate() 
     {
-        return mois;
+        return date;
     }
 
-    public void setMois(Date mois) 
+    public void setDate(Date date) 
     {
-        this.mois = mois;
+        this.date = date;
     }
 
     public List<Reclamation> getReclamationList() 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<remboursements>
+<client>100323</client>
+<mois>2013-01</mois>
+<remboursement>
+<soin>100</soin>
+<mois>2013-01-11</mois>
+<montant>58.50$</montant>
+</remboursement>
+<remboursement>
+<soin>200</soin>
+<mois>2013-01-13</mois>
+<montant>22.50$</montant>
+</remboursement>
+<remboursement>
+<soin>334</soin>
+<mois>2013-01-23</mois>
+<montant>0.00$</montant>
+</remboursement>
+</remboursements>

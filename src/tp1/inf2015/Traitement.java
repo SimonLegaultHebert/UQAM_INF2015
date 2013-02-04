@@ -4,6 +4,7 @@
  */
 package tp1.inf2015;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -49,27 +50,32 @@ public class Traitement
     {
        List<Reclamation> maListeReclamation = leCompteReclamation.getReclamationList();
        double montantRemboursement;
-       
+    
        for (int i = 0; i < maListeReclamation.size(); ++i)
        {
-            double monMontant = maListeReclamation.get(i).getMontant();
-            int choixSoin = maListeReclamation.get(i).getSoin();
-          
-            if(choixSoin == 0 || choixSoin == 100 || choixSoin == 200 || choixSoin == 500)
-            {
-                montantRemboursement = monMontant * VINGT_CINQ_POUR_CENT;
-            } 
-            else if ((choixSoin >= 300 && choixSoin <= 400) || choixSoin == 700)
-            {
-                montantRemboursement = 0;
-            }  
-            else 
-            {
-                montantRemboursement = monMontant * QUARANTE_POUR_CENT;
-            } 
+            Date dateC = leCompteReclamation.getDate();
+            Date dateR = maListeReclamation.get(i).getDate();
             
-            Reclamation leRemboursement = new Reclamation(maListeReclamation.get(i).getSoin(), maListeReclamation.get(i).getDate(), montantRemboursement);
-            remboursementList.add(leRemboursement);
+            if(dateC.getAnnee().equals(dateR.getAnnee()) && dateC.getMois().equals(dateR.getMois()))
+            {    
+                double monMontant = maListeReclamation.get(i).getMontant();
+                int choixSoin = maListeReclamation.get(i).getSoin();
+          
+                if(choixSoin == 0 || choixSoin == 100 || choixSoin == 200 || choixSoin == 500)
+                {
+                    montantRemboursement = monMontant * VINGT_CINQ_POUR_CENT;
+                } 
+                else if ((choixSoin >= 300 && choixSoin <= 400) || choixSoin == 700)
+                {
+                    montantRemboursement = 0;
+                }  
+                else 
+                {
+                    montantRemboursement = monMontant * QUARANTE_POUR_CENT;
+                } 
+                Reclamation leRemboursement = new Reclamation(maListeReclamation.get(i).getSoin(), maListeReclamation.get(i).getDate(), montantRemboursement);
+                remboursementList.add(leRemboursement);
+            }    
        }
                
     }
@@ -82,6 +88,11 @@ public class Traitement
        
        for (int i = 0; i < maListeReclamation.size(); ++i)
        {
+            Date dateC = leCompteReclamation.getDate();
+            Date dateR = maListeReclamation.get(i).getDate();
+            
+         if(dateC.getAnnee().equals(dateR.getAnnee()) && dateC.getMois().equals(dateR.getMois()))
+         {
             double monMontant = maListeReclamation.get(i).getMontant();
             int choixSoin = maListeReclamation.get(i).getSoin();            
             
@@ -101,7 +112,7 @@ public class Traitement
                     montantRemboursement = 50;
                 } 
             } 
-            else if(choixSoin ==200)
+            else if(choixSoin == 200)
             {
                 montantRemboursement = monMontant * CENT_POUR_CENT;
                 if(montantRemboursement > 70)
@@ -109,7 +120,7 @@ public class Traitement
                     montantRemboursement = 70;
                 }         
             } 
-            else if (choixSoin >300 && choixSoin<399)
+            else if (choixSoin >= 300 && choixSoin <= 399)
             {
                 montantRemboursement = monMontant * CINQUANTE_POUR_CENT;
             } 
@@ -128,23 +139,29 @@ public class Traitement
             
             Reclamation leRemboursement = new Reclamation(maListeReclamation.get(i).getSoin(), maListeReclamation.get(i).getDate(), montantRemboursement);
             remboursementList.add(leRemboursement);
-        }
+         }
+       }   
                
     }
     
     public void traitementC(CompteReclamation leCompteReclamation, List <Reclamation> remboursementList)
     {
        List<Reclamation> maListeReclamation = leCompteReclamation.getReclamationList();
-       
        double montantRemboursement;
        
        for (int i = 0; i < maListeReclamation.size(); ++i)
        {
-            double monMontant = maListeReclamation.get(i).getMontant();
-            montantRemboursement = monMontant * QUATRE_VINGT_DIX_POUR_CENT;
+            Date dateC = leCompteReclamation.getDate();
+            Date dateR = maListeReclamation.get(i).getDate();
             
-            Reclamation leRemboursement = new Reclamation(maListeReclamation.get(i).getSoin(), maListeReclamation.get(i).getDate(), montantRemboursement);
-            remboursementList.add(leRemboursement);
+            if(dateC.getAnnee().equals(dateR.getAnnee()) && dateC.getMois().equals(dateR.getMois()))
+            {
+                double monMontant = maListeReclamation.get(i).getMontant();
+                montantRemboursement = monMontant * QUATRE_VINGT_DIX_POUR_CENT;
+            
+                Reclamation leRemboursement = new Reclamation(maListeReclamation.get(i).getSoin(), maListeReclamation.get(i).getDate(), montantRemboursement);
+                remboursementList.add(leRemboursement);
+            }    
        }
                
     }
@@ -156,6 +173,12 @@ public class Traitement
        
        for (int i = 0; i < maListeReclamation.size(); ++i)
        {
+            Date dateC = leCompteReclamation.getDate();
+            Date dateR = maListeReclamation.get(i).getDate();
+            
+          if(dateC.getAnnee().equals(dateR.getAnnee()) && dateC.getMois().equals(dateR.getMois()))
+          {
+           
             double monMontant = maListeReclamation.get(i).getMontant();
             int choixSoin = maListeReclamation.get(i).getSoin();            
             
@@ -168,7 +191,7 @@ public class Traitement
                 }           
                     
             } 
-            else if(choixSoin == 100)
+            else if(choixSoin == 100 || choixSoin == 500)
             {
                 montantRemboursement = monMontant * CENT_POUR_CENT;
                 if(montantRemboursement > 75)
@@ -177,7 +200,7 @@ public class Traitement
                 }
                                       
             } 
-            else if(choixSoin ==200)
+            else if(choixSoin == 200 || choixSoin == 600)
             {
                 montantRemboursement = monMontant * CENT_POUR_CENT;
                 if(montantRemboursement > 100)
@@ -198,25 +221,7 @@ public class Traitement
                     montantRemboursement = 65;
                 }
                     
-            } 
-            else if (choixSoin == 500)
-            {
-                montantRemboursement = monMontant * CENT_POUR_CENT;
-                if(montantRemboursement > 75)
-                {
-                    montantRemboursement = 75;
-                }
-                        
-            } 
-            else if (choixSoin == 600)
-            {
-                montantRemboursement = monMontant * CENT_POUR_CENT;
-                if(montantRemboursement > 100)
-                {
-                    montantRemboursement = 100;
-                }
-                    
-            } 
+            }  
             else 
             {
                 montantRemboursement = monMontant * SOIXANTE_DIX_POUR_CENT;
@@ -229,7 +234,8 @@ public class Traitement
             
             Reclamation leRemboursement = new Reclamation(maListeReclamation.get(i).getSoin(), maListeReclamation.get(i).getDate(), montantRemboursement);
             remboursementList.add(leRemboursement);
-        }
+         }
+       }
                
     }
     
