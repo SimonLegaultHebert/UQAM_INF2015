@@ -29,10 +29,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sun.java2d.pipe.SpanShapeRenderer;
+
 /**
  *
- * @author Leg
+ * @authors Simon
+ *          Adriana
+ *          Claudy
  */
+
 public class ReclamationsDocument
 {
     private Document document;

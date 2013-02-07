@@ -9,8 +9,11 @@ import java.util.List;
 
 /**
  *
- * @author Leg
+ * @authors Simon
+ *          Adriana
+ *          Claudy
  */
+
 public class Traitement 
 {
     public static final double VINGT_CINQ_POUR_CENT = 0.25;

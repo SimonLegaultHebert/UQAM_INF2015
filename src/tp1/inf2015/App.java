@@ -15,7 +15,9 @@ import org.omg.CosNaming.NamingContextPackage.NotEmpty;
 
 /**
  *
- * @author Leg
+ * @authors Simon
+ *          Adriana
+ *          Claudy
  */
 public class App {
 

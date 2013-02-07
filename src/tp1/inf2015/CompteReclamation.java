@@ -9,7 +9,9 @@ import java.util.List;
 
 /**
  *
- * @author Leg
+ * @authors Simon
+ *          Adriana
+ *          Claudy
  */
 public class CompteReclamation 
 {

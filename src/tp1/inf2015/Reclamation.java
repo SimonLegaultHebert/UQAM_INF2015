@@ -7,7 +7,9 @@ package tp1.inf2015;
 
 /**
  *
- * @author Leg
+ * @authors Simon
+ *          Adriana
+ *          Claudy
  */
 public class Reclamation 
 {
