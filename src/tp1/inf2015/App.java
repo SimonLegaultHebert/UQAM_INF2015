@@ -21,39 +21,35 @@ import org.omg.CosNaming.NamingContextPackage.NotEmpty;
  */
 public class App {
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException, Exception 
     {
-        ReclamationsDocument reclamationsDocument = new ReclamationsDocument(args[0]);
+        ReclamationsDocument reclamationsDocument = new ReclamationsDocument("C:\\Users\\Leg\\Desktop\\INF2015\\test.xml");
         
         Traitement traitement = new Traitement();
-        boolean validation;
+  
         
         List<Reclamation> listReclamations = new ArrayList<Reclamation>();
-        validation = reclamationsDocument.createReclamationsList(listReclamations);
-        
-        if(validation)
-        {
-            CompteReclamation compteReclamation = new CompteReclamation();
-            validation = reclamationsDocument.createCompteReclamation(compteReclamation, listReclamations);
+                
             
-            if(validation)
+            try
             {
+               
+                reclamationsDocument.validateReclationsInformationsInXMLFile();
+                reclamationsDocument.creationOfReclamationsListAfterValidation(listReclamations);
+                CompteReclamation compteReclamation = new CompteReclamation();
+                reclamationsDocument.creationOfCompteReclamationAfterValidation(compteReclamation, listReclamations);
                 List<Reclamation> remboursements = new ArrayList<Reclamation>();
                 traitement.TraitementSoin(compteReclamation, remboursements);
-                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements, args[1]);                      
+                reclamationsDocument.addTagRemboursement(compteReclamation, remboursements, "C:\\Users\\Leg\\Desktop\\INF2015\\Sortie.xml");                      
             }
-            else
+            catch(Exception e)
             {
-                reclamationsDocument.addTagInvalide(args[1]);
+                reclamationsDocument.addTagInvalide("C:\\Users\\Leg\\Desktop\\INF2015\\Sortie.xml", e.getMessage());
             }
-        }
-        else
-        {
-            reclamationsDocument.addTagInvalide(args[1]);
-        }
+                
+            
+        
     
     }                                                                                                                                                                                                                                                                                                         
 }

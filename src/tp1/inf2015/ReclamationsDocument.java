@@ -98,60 +98,133 @@ public class ReclamationsDocument
         return date;
     
     }
+    public void validateClientInformationsInXMLFile() throws ValidationException
+    {
+        String tableauChaine[] = {"client", "contrat", "mois"};
+        for(String chaine : tableauChaine)
+        {
+            try
+            {
+                getTag(chaine);
+            }
+            catch(NullPointerException e)
+            {
+                throw new ValidationException("Il manque l'élément " + chaine + " dans le fichier");
+            }
+        }     
+    }
     
-    public boolean createReclamationsList(List<Reclamation> reclamations)
+    public void validateReclationsInformationsInXMLFile() throws ValidationException
+    {
+            String tableauChaine[] = {"soin", "date", "montant"};
+            int numberOfReclamations = getTagList("reclamation").size();
+            if(numberOfReclamations == 0)
+            {
+            throw new ValidationException("Il n'y a pas de reclamation dans le document");
+            }
+            
+            for(String chaine : tableauChaine)
+            {
+                if(getTagList(chaine).size() != numberOfReclamations)
+                {
+                    throw new ValidationException("Il manque l'element " + chaine + " dans une reclamation");
+                }
+            }
+    }
+    
+    public void creationOfReclamationsListAfterValidation(List<Reclamation> reclamations) throws ValidationException
+    {
+        validateReclamationsListElements(reclamations);
+        createReclamationsList(reclamations);
+    }
+    
+    
+    public void createReclamationsList(List<Reclamation> reclamations)
+    {
+            
+            for(int i = 0; i < getTagList("reclamation").size(); ++i)
+            {
+                
+                    int soinInt = Integer.parseInt(getTagList("soin").get(i));
+                    Date dateDate = parsingDate(getTagList("date").get(i));
+                    double montantDouble = Double.parseDouble(getTagList("montant").get(i).substring(0, getTagList("montant").get(i).length() - 1).replace(',', '.'));
+                    Reclamation reclamation = new Reclamation(soinInt, dateDate, montantDouble);
+                    reclamations.add(reclamation);
+                
+            }             
+    }
+    
+    public void validateReclamationsListElements(List<Reclamation> reclamations) throws ValidationException
     {
         SimpleRegex regexSoin = new SimpleRegex("0|100|200|400|500|600|700|(3[0-9][0-9])");
         SimpleRegex regexDate = new SimpleRegex("[0-9]{4}-(0[0-9]|1[0-2])-([0-2][1-9]|3[0-1])");
-        SimpleRegex regexMontant = new SimpleRegex("[0-9]*.[0-9]{2}\\$");
-        List<String> soin = getTagList("soin");
-        List<String> date = getTagList("date");
-        List<String> montant = getTagList("montant");
+        SimpleRegex regexMontant = new SimpleRegex("[0-9]*(,||.)[0-9]{2}\\$");
         
-        
-            int size = soin.size();
-            for(int i = 0; i < size; ++i)
+            
+            
+            for(int i = 0; i < getTagList("reclamation").size(); ++i)
             {
-                if(regexSoin.matches(soin.get(i)) && regexDate.matches(date.get(i)) && regexMontant.matches(montant.get(i)))
+                if(!regexSoin.matches(getTagList("soin").get(i)))
                 {
-                    int soinInt = Integer.parseInt(soin.get(i));
-                    Date dateDate = parsingDate(date.get(i));
-                    double montantDouble = Double.parseDouble(montant.get(i).substring(0, montant.get(i).length() - 1));
-                    Reclamation reclamation = new Reclamation(soinInt, dateDate, montantDouble);
-                    reclamations.add(reclamation);
+                    throw new ValidationException("Le numéro de soin est invalide");
                 }
-                else
+                if(!regexDate.matches(getTagList("date").get(i)))
                 {
-                    return false; //si un champ n'est pas valide
+                    throw new ValidationException("La date est invalide");
                 }
+                if(!regexMontant.matches(getTagList("montant").get(i)))
+                {
+                    throw new ValidationException("Le montant est invalide");
+                }
+            
             }
-       return true; 
+    
     }
     
-    public boolean createCompteReclamation(CompteReclamation reclamation, List<Reclamation> reclamations)
+    
+    
+    
+    
+    public void creationOfCompteReclamationAfterValidation(CompteReclamation reclamation, List<Reclamation> reclamations) throws Exception
+    {      
+        validateCompteReclamationElements();
+        createCompteReclamation(reclamation, reclamations);   
+    }
+    
+    
+    
+    public void createCompteReclamation(CompteReclamation reclamation, List<Reclamation> reclamations)
     {
-        reclamation.setReclamationList(reclamations);
+            reclamation.setReclamationList(reclamations);          
+            int clientInt = Integer.parseInt(getTag("client"));
+            char contratChar = getTag("contrat").charAt(0);
+            Date dateDate = parsingDate(getTag("mois"));
+            reclamation.setClient(clientInt);
+            reclamation.setContrat(contratChar);
+            reclamation.setDate(dateDate);              
+    }
+    
+    public void validateCompteReclamationElements() throws ValidationException
+    {
         SimpleRegex regexClient = new SimpleRegex("[0-9]{6}");
         SimpleRegex regexContrat = new SimpleRegex("A|B|C|D");
         SimpleRegex regexDate = new SimpleRegex("[0-9]{4}-(0[0-9]|1[0-2])");
-        String client = getTag("client");
-        String contrat = getTag("contrat");
-        String date = getTag("mois");
-        
-        if(regexClient.matches(client) && regexContrat.matches(contrat) && regexDate.matches(date))
+       
+        if(!regexClient.matches(getTag("client")))
         {
-            int clientInt = Integer.parseInt(client);
-            char contratChar = contrat.charAt(0);
-            Date dateDate = parsingDate(date);
-            reclamation.setClient(clientInt);
-            reclamation.setContrat(contratChar);
-            reclamation.setDate(dateDate);
-        }                                                            
-        else
-        {
-            return false; //si le champ n'est pas valide
+         throw new ValidationException("Le numéro de Client est invalide");
         }
-        return true;
+        
+        if(!regexContrat.matches(getTag("contrat")))
+        {
+         throw new ValidationException("Le contrat est invalide");
+        }
+        
+        if(!regexDate.matches(getTag("mois")))
+        {
+         throw new ValidationException("La date est invalide");
+        }
+        
     }
     
     public void clean()
@@ -197,13 +270,13 @@ public class ReclamationsDocument
             nodeRemboursement.appendChild(montant);
             NumberFormat decim = DecimalFormat.getInstance();
             decim.setMinimumFractionDigits(2);
-            montant.setTextContent((decim.format(remboursement.getMontant())) + "$");
+            montant.setTextContent((decim.format(remboursement.getMontant()).replace(',', '.')) + "$");
             
         }
         saveToFile(filePath);
     }
     
-    public void addTagInvalide(String filePath) throws Exception
+    public void addTagInvalide(String filePath, String msg) throws Exception
     {
         clean();
         Element rootElement = document.createElement("remboursements");
@@ -211,7 +284,7 @@ public class ReclamationsDocument
         
         Element message = document.createElement("message");
         rootElement.appendChild(message);
-        message.setTextContent("Données invalides");
+        message.setTextContent(msg);
         
         saveToFile(filePath);
     }
