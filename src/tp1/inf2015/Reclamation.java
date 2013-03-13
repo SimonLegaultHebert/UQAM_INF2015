@@ -1,60 +1,42 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tp1.inf2015;
-
 
 /**
  *
- * @authors Simon
- *          Adriana
- *          Claudy
+ * @authors Simon Adriana Claudy
  */
-public class Reclamation 
-{
+public class Reclamation {
+
     private int soin;
     private Date date;
     private double montant;
-    
-    public Reclamation(int soin, Date date, double montant) 
-    {
+
+    public Reclamation(int soin, Date date, double montant) {
         this.soin = soin;
         this.date = date;
         this.montant = montant;
     }
 
-    public Date getDate() 
-    {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) 
-    {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public double getMontant() 
-    {
+    public double getMontant() {
         return montant;
     }
 
-    public void setMontant(double montant) 
-    {
+    public void setMontant(double montant) {
         this.montant = montant;
     }
 
-    public int getSoin() 
-    {
+    public int getSoin() {
         return soin;
     }
 
-    public void setSoin(int soin) 
-    {
+    public void setSoin(int soin) {
         this.soin = soin;
     }
-
-    
-    
-    
 }

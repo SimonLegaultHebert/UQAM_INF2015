@@ -1,18 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tp1.inf2015;
 
 /**
  *
  * @authors Simon
- *          Adriana
- *          Claudy
+ *
  */
+public class Date {
 
-public class Date 
-{
     private String Annee;
     private String Mois;
     private String Jour;
@@ -22,10 +16,10 @@ public class Date
         this.Mois = Mois;
         this.Jour = Jour;
     }
-    
+
     public Date(String Annee, String Mois) {
         this.Annee = Annee;
-        this.Mois = Mois;       
+        this.Mois = Mois;
     }
 
     public String getAnnee() {
@@ -51,6 +45,4 @@ public class Date
     public void setMois(String Mois) {
         this.Mois = Mois;
     }
-    
-    
 }

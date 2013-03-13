@@ -4,73 +4,57 @@
  */
 package tp1.inf2015;
 
-
 import java.util.List;
 
 /**
  *
- * @authors Simon
- *          Adriana
- *          Claudy
+ * @authors Simon Adriana Claudy
  */
-public class CompteReclamation 
-{
-    private int client;
-    private char contrat;
+public class CompteReclamation {
+
+    private String dossier;
     private Date date;
-    List<Reclamation> reclamationList;
-    
-    public CompteReclamation(){}
-    
-    public CompteReclamation(int client, char contrat, Date date, List<Reclamation> reclamationList) 
-    {
-        this.client = client;
-        this.contrat = contrat;
+    private List<Reclamation> listeReclamations;
+
+    public CompteReclamation() {
+    }
+
+    public CompteReclamation(String dossier, Date date, List<Reclamation> listeReclamations) {
+
+        this.dossier = dossier;
         this.date = date;
-        this.reclamationList = reclamationList;
+        this.listeReclamations = listeReclamations;
     }
 
-    public int getClient() 
-    {
-        return client;
+    public String getDossier() {
+        return dossier;
     }
 
-    public void setClient(int client) 
-    {
-        this.client = client;
+    public void setDossier(String dossier) {
+        this.dossier = dossier;
     }
 
-    public char getContrat() 
-    {
-        return contrat;
-    }
-
-    public void setContrat(char contrat) 
-    {
-        this.contrat = contrat;
-    }
-
-    public Date getDate() 
-    {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) 
-    {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public List<Reclamation> getReclamationList() 
-    {
-        return reclamationList;
+    public List<Reclamation> getlisteReclamations() {
+        return listeReclamations;
     }
 
-    public void setReclamationList(List<Reclamation> reclamationList) 
-    {
-        this.reclamationList = reclamationList;
+    public void setListeReclamations(List<Reclamation> listeReclamations) {
+        this.listeReclamations = listeReclamations;
     }
-    
-    
-    
-    
+
+    public char getContrat() {
+        return dossier.charAt(0);
+    }
+
+    public int getClient() {
+        return Integer.parseInt(dossier.substring(1, 6));
+    }
 }
